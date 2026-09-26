@@ -38,3 +38,4 @@ jobs:
         run: |
           nvim --headless -u NONE -l tests/run.lua
           SNACKS_TEST_DIR="$RUNNER_TEMP/link-preview/snacks.nvim" nvim --headless -u NONE -l tests/retry.lua
+          SNACKS_TEST_DIR="$RUNNER_TEMP/link-preview/snacks.nvim" nvim --headless -u NONE -l tests/placement.lua

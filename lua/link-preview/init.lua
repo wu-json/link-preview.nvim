@@ -168,6 +168,26 @@ local function show(data, url)
       end
     end,
   })
+  if not snacks.image.terminal.env().placeholders then
+    -- Snacks' fallback renderer derives a tabline offset from its global image
+    -- style. This float is editor-relative, so use its actual content origin.
+    -- Override only this placement, leaving other Snacks images untouched.
+    function current.img:render_fallback(state)
+      for _, image_win in ipairs(state.wins) do
+        local pos = vim.api.nvim_win_get_position(image_win)
+        local border = win:border_size()
+        snacks.image.terminal.set_cursor({ pos[1] + border.top + 1, pos[2] + border.left })
+        snacks.image.terminal.request({
+          a = "p",
+          i = self.img.id,
+          p = self.id,
+          C = 1,
+          c = state.loc.width,
+          r = state.loc.height,
+        })
+      end
+    end
+  end
   local deadline = vim.uv.now() + 10000
   local function check_image()
     if hover ~= current or updated then
