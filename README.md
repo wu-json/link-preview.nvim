@@ -30,7 +30,6 @@ Add this to your [lazy.nvim](https://github.com/folke/lazy.nvim) plugins:
 return {
   {
     "wu-json/link-preview.nvim",
-    main = "link-preview",
     event = "VeryLazy",
     dependencies = {
       { "folke/snacks.nvim", opts = { image = { enabled = true } } },
