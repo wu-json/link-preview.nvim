@@ -70,32 +70,6 @@ closes it manually.
 `require("link-preview").resolve_image(_, src)` resolves YouTube thumbnails and
 returns `nil` for other sources, allowing Snacks to resolve them normally.
 
-## Development
-
-Run the offline tests from the repository root:
-
-```sh
-nvim --headless -u NONE -l tests/run.lua
-nvim --headless -u NONE -l tests/retry.lua
-```
-
-Tests require the parsers listed above. The retry test uses the installed Snacks
-image cache class from `stdpath("data")/lazy/snacks.nvim`; set `SNACKS_TEST_DIR`
-to use another checkout. Rendering and image conversion are stubbed; actual
-image display needs a supported terminal.
-
-CI runs these tests on pull requests and pushes to `main` that change Lua code,
-tests, or CI files. The setup scripts pin Neovim, Snacks, and parser revisions.
-To install the same test dependencies on Linux x86_64:
-
-```sh
-bash .github/scripts/setup-link-preview-tests.sh /tmp/link-preview-tests
-export PATH="/tmp/link-preview-tests/nvim/bin:$PATH"
-export SNACKS_TEST_DIR="/tmp/link-preview-tests/snacks.nvim"
-```
-
-Originally developed in [wu-json/dots](https://github.com/wu-json/dots).
-
 ## License
 
 [MIT](LICENSE)
