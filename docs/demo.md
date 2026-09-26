@@ -9,10 +9,6 @@ Pause on a link in normal mode to preview it.
 
 A travel vlog edited entirely on an iPad Pro.
 
-[Making videos on iPad Pro — Nagisa Ichikawa](https://www.youtube.com/watch?v=umoUhsSXLxg)
-
-A look at creating videos with LumaFusion.
-
 ## Read
 
 [The LumaFusion editing notebook](https://note.com/nagiko/n/n00762a797bb5)
