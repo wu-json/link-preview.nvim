@@ -1,8 +1,6 @@
 # link-preview.nvim
 
-Preview Markdown links in Neovim with Open Graph images and YouTube thumbnails,
-powered by [snacks.nvim](https://github.com/folke/snacks.nvim). Pause the cursor on
-a link in normal mode to show a preview; move away to close it.
+Preview markdown links in Neovim with Open Graph images and YouTube thumbnails. Just place your cursor on a link in normal mode to show a preview.
 
 **YouTube thumbnail preview:**
 
