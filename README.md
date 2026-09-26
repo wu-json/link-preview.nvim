@@ -4,6 +4,18 @@ Preview Markdown links in Neovim with Open Graph images and YouTube thumbnails,
 powered by [snacks.nvim](https://github.com/folke/snacks.nvim). Pause the cursor on
 a link in normal mode to show a preview; move away to close it.
 
+YouTube thumbnail preview:
+
+![YouTube thumbnail displayed beside a Markdown link in Neovim](docs/screenshots/youtube-preview.png)
+
+Article Open Graph image preview:
+
+![Article image displayed beside a Markdown link in Neovim](docs/screenshots/article-preview.png)
+
+GitHub repository preview:
+
+![GitHub repository card displayed beside a Markdown link in Neovim](docs/screenshots/github-preview.png)
+
 ## Requirements
 
 - Neovim 0.10+
