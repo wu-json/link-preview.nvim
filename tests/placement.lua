@@ -17,8 +17,7 @@ end
 terminal.request = function(data)
   request = data
 end
--- Keep real Snacks windows, sizing, and placement; replace only terminal I/O
--- and image loading so this regression runs offline without a graphical UI.
+-- Exercise real Snacks placement with offline image data and captured terminal I/O.
 snacks.image.setup = function() end
 local image = {
   id = 1,

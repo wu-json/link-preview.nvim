@@ -171,7 +171,6 @@ local function show(data, url)
   if not snacks.image.terminal.env().placeholders then
     -- Snacks' fallback renderer derives a tabline offset from its global image
     -- style. This float is editor-relative, so use its actual content origin.
-    -- Override only this placement, leaving other Snacks images untouched.
     function current.img:render_fallback(state)
       for _, image_win in ipairs(state.wins) do
         local pos = vim.api.nvim_win_get_position(image_win)
