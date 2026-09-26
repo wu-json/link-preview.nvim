@@ -1,40 +1,101 @@
 # link-preview.nvim
 
-Markdown link previews using Snacks images, Open Graph metadata, and YouTube thumbnails.
+Markdown link previews for Neovim, powered by Snacks images, Open Graph metadata,
+and YouTube thumbnails. Pause the cursor on a link in normal mode to see its preview.
 
-Requires Neovim 0.10+, curl, Snacks with image support, and the HTML, Markdown,
-and Markdown-inline Tree-sitter parsers. Image display also requires ImageMagick
-and a terminal supported by Snacks.
+## Requirements
 
-Add this directory to Neovim's runtime path, then call:
+- Neovim 0.10+ (CI tests with 0.11.5).
+- [snacks.nvim](https://github.com/folke/snacks.nvim) with image support enabled.
+- `curl`, ImageMagick, and a terminal supported by Snacks image rendering.
+- The `html`, `markdown`, and `markdown_inline` Tree-sitter parsers.
+
+## Installation
+
+With [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
-require("link-preview").setup({ delay = 200, max_width = 40, max_height = 12 })
+return {
+  {
+    "wu-json/link-preview.nvim",
+    main = "link-preview",
+    event = "VeryLazy",
+    dependencies = { "folke/snacks.nvim" },
+    opts = {},
+  },
+  {
+    "folke/snacks.nvim",
+    opts = {
+      image = {
+        enabled = true,
+        -- Optional: also resolve YouTube URLs used in Markdown image embeds.
+        resolve = function(_, src)
+          return require("link-preview").resolve_image(nil, src)
+        end,
+      },
+    },
+  },
+}
 ```
 
-For YouTube image embeds, set Snacks' `image.resolve` option to
-`require("link-preview").resolve_image`. Other image URLs return `nil` so Snacks
-can resolve them normally.
+Install the required parsers through your Tree-sitter setup. For configurations
+using `nvim-treesitter`'s `ensure_installed` option, include `"html"`, `"markdown"`,
+and `"markdown_inline"`.
 
-Options also include `filetypes`, `ttl`, `failure_ttl`, `max_entries`, and
-`cache_dir`. Defaults are Markdown/MDX, 3600 seconds, 60 seconds, 128 entries,
-and a per-user temp directory. Previewing a link fetches its page and image.
+With another plugin manager, install this repository and Snacks, enable Snacks
+images, then call `require("link-preview").setup({})`.
 
-Run offline tests from this directory:
+## Configuration
+
+All options are optional. Defaults:
+
+```lua
+require("link-preview").setup({
+  filetypes = { "markdown", "markdown.mdx" },
+  delay = 200,          -- milliseconds before showing a preview
+  max_width = 40,       -- columns
+  max_height = 12,      -- rows
+  ttl = 3600,           -- successful metadata cache lifetime, seconds
+  failure_ttl = 60,    -- failed preview cache lifetime, seconds
+  max_entries = 128,
+  -- cache_dir = "/path/to/cache", -- defaults to a per-user temporary directory
+})
+```
+
+Previewing a link fetches its page and image. YouTube links use thumbnails directly.
+Metadata is cached in memory and on disk. Links without an image show a text
+fallback. Moving away closes the preview; `require("link-preview").close()` also
+closes it manually.
+
+`require("link-preview").resolve_image(_, src)` resolves YouTube thumbnails and
+returns `nil` for other sources, allowing Snacks to resolve them normally.
+
+## Development
+
+Run the offline tests from the repository root:
 
 ```sh
 nvim --headless -u NONE -l tests/run.lua
 nvim --headless -u NONE -l tests/retry.lua
 ```
 
-The tests require the Tree-sitter parsers above. The retry test uses the installed
-Snacks image cache class from `stdpath("data")/lazy/snacks.nvim`; set
-`SNACKS_TEST_DIR` to use another checkout. Rendering and image conversion are stubbed; check actual
-image display in a supported terminal. This directory can be moved into its own
-repository; the dots integration only supplies the local plugin path and options.
+Tests require the parsers listed above. The retry test uses the installed Snacks
+image cache class from `stdpath("data")/lazy/snacks.nvim`; set `SNACKS_TEST_DIR`
+to use another checkout. Rendering and image conversion are stubbed; actual
+image display needs a supported terminal.
 
-CI runs this suite on pull requests and pushes to `main` when plugin code/tests,
-the Markdown configuration, the Neovim lockfile, or the CI workflow/setup script change.
-It uses one Linux job with pinned Neovim and parser versions, the lockfile’s Snacks
-revision, and cancels superseded
-runs. Documentation-only changes do not trigger it.
+CI runs these tests on pull requests and pushes to `main` that change Lua code,
+tests, or CI files. The setup scripts pin Neovim, Snacks, and parser revisions.
+To install the same test dependencies on Linux x86_64:
+
+```sh
+bash .github/scripts/setup-link-preview-tests.sh /tmp/link-preview-tests
+export PATH="/tmp/link-preview-tests/nvim/bin:$PATH"
+export SNACKS_TEST_DIR="/tmp/link-preview-tests/snacks.nvim"
+```
+
+Originally developed in [wu-json/dots](https://github.com/wu-json/dots).
+
+## License
+
+[MIT](LICENSE)
