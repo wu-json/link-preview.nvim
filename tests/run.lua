@@ -60,9 +60,10 @@ end))
 vim.api.nvim_win_set_cursor(0, { 2, 8 })
 preview.schedule()
 requests[1]({ code = 0, stdout = "<title>first</title>\nhttps://example.org/first" })
-vim.wait(50)
+assert(vim.wait(1000, function()
+  return #requests == 2
+end), "second hover did not start its request")
 assert(shown == 0, "stale response opened a popup")
-assert(#requests == 2)
 requests[2]({ code = 0, stdout = "<title>second</title>\nhttps://example.org/second" })
 assert(vim.wait(300, function()
   return shown == 1
